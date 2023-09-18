@@ -1,3 +1,4 @@
+import {Card, CardHeader, CardBody, CardFooter} from '@nextui-org/react';
 import {json, redirect, type LoaderArgs} from '@shopify/remix-oxygen';
 import {useLoaderData, Link, type V2_MetaFunction} from '@remix-run/react';
 import {
@@ -41,8 +42,12 @@ export default function Collection() {
 
   return (
     <div className="collection">
-      <h1>{collection.title}</h1>
-      <p className="collection-description">{collection.description}</p>
+      <div className="w-full flex flex-col items-center justify-center mb-20">
+        <h1 className="font-extrabold text-transparent text-8xl bg-clip-text bg-gradient-to-r from-lime-400 to-green-600">
+          {collection.title}
+        </h1>
+        <p className="collection-description">{collection.description}</p>
+      </div>
       <Pagination connection={collection.products}>
         {({nodes, isLoading, PreviousLink, NextLink}) => (
           <>
@@ -87,26 +92,29 @@ function ProductItem({
   const variant = product.variants.nodes[0];
   const variantUrl = useVariantUrl(product.handle, variant.selectedOptions);
   return (
-    <Link
-      className="product-item"
-      key={product.id}
-      prefetch="intent"
-      to={variantUrl}
-    >
-      {product.featuredImage && (
-        <Image
-          alt={product.featuredImage.altText || product.title}
-          aspectRatio="1/1"
-          data={product.featuredImage}
-          loading={loading}
-          sizes="(min-width: 45em) 400px, 100vw"
-        />
-      )}
-      <h4>{product.title}</h4>
-      <small>
-        <Money data={product.priceRange.minVariantPrice} />
-      </small>
-    </Link>
+    <Card className="border-none relative" isFooterBlurred>
+      <Link className="" key={product.id} prefetch="intent" to={variantUrl}>
+        <CardHeader className="absolute bg-green-300/20 h-full w-full hover:bg-black/0">
+          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2  flex gap-2 items-center bg-white/70 z-10 px-2 w-full">
+            <h4 className="text-md font-bold text-black">{product.title}</h4>
+            <small className="text-sm text-black">
+              <Money data={product.priceRange.minVariantPrice} />
+            </small>
+          </div>
+        </CardHeader>
+        {product.featuredImage && (
+          <CardBody className="-p-2">
+            <Image
+              alt={product.featuredImage.altText || product.title}
+              aspectRatio="1/1"
+              data={product.featuredImage}
+              loading={loading}
+              // sizes="(min-width: 45em) 400px, 100vw"
+            />
+          </CardBody>
+        )}
+      </Link>
+    </Card>
   );
 }
 
