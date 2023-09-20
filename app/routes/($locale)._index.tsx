@@ -28,7 +28,7 @@ export async function loader({context}: LoaderArgs) {
 export default function Homepage() {
   const data = useLoaderData<typeof loader>();
   return (
-    <div className="home">
+    <div>
       <FeaturedCollection collection={data.featuredCollection} />
       <RecommendedProducts products={data.recommendedProducts} />
     </div>
@@ -42,17 +42,29 @@ function FeaturedCollection({
 }) {
   const image = collection.image;
   return (
-    <Link
-      className="featured-collection"
-      to={`/collections/${collection.handle}`}
-    >
-      {image && (
-        <div className="featured-collection-image">
-          <Image data={image} sizes="100vw" />
-        </div>
-      )}
-      <h1>{collection.title}</h1>
-    </Link>
+    <div className="flex w-full">
+      <div className="w-1/2 flex flex-col justify-center items-start px-12">
+        <h1 className="m-0 mb-2 text-6xl">Mock.shop | {collection.title}</h1>
+        <p className="text-xl">
+          Explore the top of the line tops for your fall collection.
+        </p>
+      </div>
+
+      <div className="w-1/2 relative">
+        <div className="absolute top-0 w-full h-full bg-black/20 hover:bg-black/0"></div>
+        <Link to={`/collections/${collection.handle}`}>
+          {image && (
+            <div className="">
+              <Image
+                className=""
+                data={image}
+                sizes="(min-width: 45em) 40vw, 100vw"
+              />
+            </div>
+          )}
+        </Link>
+      </div>
+    </div>
   );
 }
 
