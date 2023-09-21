@@ -8,5 +8,12 @@ export default {
     './app/**/*.{js,ts,jsx,tsx}',
     './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
   ],
+  theme: {
+    extend: {
+      backgroundColor: {
+        glass: 'rgba(255, 255, 255, 0.5)',
+      },
+    },
+  },
   plugins: [formsPlugin, typographyPlugin, nextui()],
 };

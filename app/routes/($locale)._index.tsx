@@ -11,6 +11,7 @@ import type {
   FeaturedCollectionFragment,
   RecommendedProductsQuery,
 } from 'storefrontapi.generated';
+import TextBlock from '~/components/TextBlock';
 
 export const meta: V2_MetaFunction = () => {
   return [{title: 'Hydrogen | Home'}];
@@ -30,6 +31,7 @@ export default function Homepage() {
   return (
     <div>
       <FeaturedCollection collection={data.featuredCollection} />
+      <TextBlock>We are a leading clothing brand.</TextBlock>
       <RecommendedProducts products={data.recommendedProducts} />
     </div>
   );
@@ -42,15 +44,15 @@ function FeaturedCollection({
 }) {
   const image = collection.image;
   return (
-    <div className="flex w-full">
+    <div className="flex w-full h-auto">
       <div className="w-1/2 flex flex-col justify-center items-start px-12">
-        <h1 className="m-0 mb-2 text-6xl">Mock.shop | {collection.title}</h1>
+        <h1 className="m-0 mb-2 text-8xl">Mock.shop | {collection.title}</h1>
         <p className="text-xl">
           Explore the top of the line tops for your fall collection.
         </p>
       </div>
 
-      <div className="w-1/2 relative">
+      <div className="w-1/2 relative z-10">
         <div className="absolute top-0 w-full h-full bg-black/20 hover:bg-black/0"></div>
         <Link to={`/collections/${collection.handle}`}>
           {image && (
