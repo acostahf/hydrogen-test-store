@@ -12,6 +12,7 @@ import type {
   RecommendedProductsQuery,
 } from 'storefrontapi.generated';
 import TextBlock from '~/components/TextBlock';
+import {Card, CardFooter, Tooltip} from '@nextui-org/react';
 
 export const meta: V2_MetaFunction = () => {
   return [{title: 'Hydrogen | Home'}];
@@ -44,15 +45,17 @@ function FeaturedCollection({
 }) {
   const image = collection.image;
   return (
-    <div className="flex w-full h-auto">
-      <div className="w-1/2 flex flex-col justify-center items-start px-12">
-        <h1 className="m-0 mb-2 text-8xl">Mock.shop | {collection.title}</h1>
+    <div className="flex md:flex-row flex-col w-full md:h-auto">
+      <div className="md:w-1/2 h-96 md:h-auto flex flex-col justify-center items-start px-6 md:px-12">
+        <h1 className="m-0 mb-2 text-4xl lg:text-8xl">
+          Mock.shop | {collection.title}
+        </h1>
         <p className="text-xl">
           Explore the top of the line tops for your fall collection.
         </p>
       </div>
 
-      <div className="w-1/2 relative z-10">
+      <div className="md:w-1/2 relative z-10">
         <div className="absolute top-0 w-full h-full bg-black/20 hover:bg-black/0"></div>
         <Link to={`/collections/${collection.handle}`}>
           {image && (
@@ -76,29 +79,53 @@ function RecommendedProducts({
   products: Promise<RecommendedProductsQuery>;
 }) {
   return (
-    <div className="recommended-products">
-      <h2>Recommended Products</h2>
+    <div className="md:h-3/4">
+      <div className="p-6 md:p-12">
+        <h2 className="text-4xl md:text-5xl">Recommended Products</h2>
+      </div>
+
       <Suspense fallback={<div>Loading...</div>}>
         <Await resolve={products}>
           {({products}) => (
-            <div className="recommended-products-grid">
-              {products.nodes.map((product) => (
-                <Link
-                  key={product.id}
-                  className="recommended-product"
-                  to={`/products/${product.handle}`}
-                >
-                  <Image
-                    data={product.images.nodes[0]}
-                    aspectRatio="1/1"
-                    sizes="(min-width: 45em) 20vw, 50vw"
-                  />
-                  <h4>{product.title}</h4>
-                  <small>
-                    <Money data={product.priceRange.minVariantPrice} />
-                  </small>
-                </Link>
-              ))}
+            <div className="md:px-12 md:pb-12 relative">
+              <div className="flex md:flex-row flex-col gap-2 items-center md:justify-between ">
+                {products.nodes.map((product) => (
+                  <Tooltip
+                    content={
+                      <div className="px-1 py-2">
+                        <div className="text-small font-bold">
+                          {product.title}
+                        </div>
+                        <div className="text-tiny">
+                          <Money data={product.priceRange.minVariantPrice} />
+                        </div>
+                      </div>
+                    }
+                  >
+                    <Card className="">
+                      <Link
+                        key={product.id}
+                        className="md:w-full"
+                        to={`/products/${product.handle}`}
+                      >
+                        <Image
+                          data={product.images.nodes[0]}
+                          aspectRatio="1/1"
+                          sizes="(min-width: 45em) 20vw, 50vw"
+                          className="hover:opacity-60 transition-opacity duration-150"
+                        />
+                        {/* <CardFooter className="flex flex-col px-6 flex-wrap ">
+                        <h4>{product.title}</h4>
+                        <small>
+                        <Money data={product.priceRange.minVariantPrice} />
+                        </small>
+                      </CardFooter> */}
+                      </Link>
+                    </Card>
+                  </Tooltip>
+                ))}
+                <div className="-z-10 bg-gradient-to-br from-red-200 blur-3xl to-indigo-200 w-[400px] h-[400px] rounded-full absolute bottom-0 right-0 "></div>
+              </div>
             </div>
           )}
         </Await>
